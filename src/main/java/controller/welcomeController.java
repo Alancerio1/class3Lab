@@ -3,22 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package activity2;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.WelcomeService;
 
 /**
  *
  * @author alancerio18
  */
-@WebServlet(name = "PageGenerator", urlPatterns = {"/pager"})
-public class PageGenerator extends HttpServlet {
+@WebServlet(name = "welcomeController", urlPatterns = {"/welcomeController"})
+public class welcomeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,35 +33,21 @@ public class PageGenerator extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PageGenerator</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1><table>"
-                    + "  <tr>\n"
-                    + "    <th>First</th>"
-                    + "    <th>Last</th> "
-                    + "    <th>Age</th>"
-                    + "  </tr>"
-                    + "  <tr>"
-                    + "    <td>Alex</td>"
-                    + "    <td>Lancerio</td> "
-                    + "    <td>20</td>"
-                    + "  </tr>"
-                    + "  <tr>"
-                    + "    <td>Megan</td>"
-                    + "    <td>Nowkowski</td>"
-                    + "    <td>21</td>"
-                    + "  </tr>"
-                    + "</table> </h1>");
-            out.println("</body>");
-            out.println("</html>");
+           String name = request.getParameter("myName");
+                   
+                   
+        
+        WelcomeService service = new WelcomeService();
+        
+        String responseMsg = service.calculatedTime(name);
+        
+        request.setAttribute("Msg", responseMsg);
+        
+        RequestDispatcher view =
+                request.getRequestDispatcher("/welcomeForm.jsp");
+        view.forward(request,response);
         }
     }
 
